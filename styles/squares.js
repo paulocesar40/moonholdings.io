@@ -13,7 +13,7 @@ export const SquareShade = styled.section`
   border-left: 1px solid rgba(0, 0, 0, .125);
 `;
 
-export const CoinSquare = styled.div`
+export const CoinSquare = styled.section`
   display: inline-block;
   flex-grow: 1;
   box-sizing: content-box;
@@ -38,7 +38,6 @@ export const CoinSquare = styled.div`
   }
 
   em { font-style: normal; opacity: 0.7 }
-
   p { font-weight: 200; }
 `;
 
@@ -75,18 +74,23 @@ export const EditSquare = styled(CoinSquare)`
   font-size: 1.5rem;
   cursor: default;
 
-  h2 { margin-top: 0; }
+  header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    h2 { margin: 0; font-size: 4rem; }
+    h3 { margin: 2rem 0; }
+  }
 
   input {
-    width: 96%;
-    height: 3rem;
-    font-size: 1.5rem;
+    margin: -1rem 0 0.5rem;
     padding-left: 1rem;
+    width: 96%;
+    height: 3.5rem;
+    font-size: 1.5rem;
     background: none;
-    border-top: 0;
-    border-right: 0;
-    border-left: 0;
-    border-bottom: 1px solid ${props => props.theme.offWhite};
+    border: 1px solid ${props => props.theme.offWhite};
     outline-width: 0;
   }
 
@@ -98,10 +102,7 @@ export const EditSquare = styled(CoinSquare)`
 
 export const EditSquareData = styled.section`
   height: 100%;
-
-  h3 { margin: 2rem 0 0; font-size: 5rem; }
-
-  p { line-height: 1rem; }
+  p { margin: 1rem 0 !important; line-height: 1rem; }
 `;
 
 export const EditButtonsContainer = styled.div`
@@ -119,21 +120,19 @@ export const EditButtonsContainer = styled.div`
   }
 `;
 
-export const CoinStat = styled.div`
+export const CoinRow = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin: 0 0 5px 0;
+  margin: 0 0 4px 0;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 
   h1 { font-size: 1.5rem; line-height: 0; }
-
   h4 { line-height: 0.15rem; }
-
   p { margin: 0; }
 `;
 
-export const CoinRank = styled(CoinStat)`
+export const CoinRank = styled(CoinRow)`
   margin-bottom: 0.5rem;
   border-bottom: none;
 `;

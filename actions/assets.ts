@@ -1,6 +1,8 @@
 import { getPrices, getAvailableSupply, getMarkets } from '../services/api'
-import { combineExchangeData, formatAssets, formatCoinsForPortfolio } from '../services/coinFactory'
-import { IAsset } from '../shared/types'
+import { fetchAll, combineExchangeData, formatAssets, formatCoinsForPortfolio }
+  from '../services/coinFactory'
+import { IAsset, DispatchAllAssets, DispatchMarketPrices, DispatchAddCoin, DispatchAddCoins }
+  from '../shared/types'
 
 // ACTION TYPES
 export const Actions = {
@@ -11,36 +13,10 @@ export const Actions = {
   ADD_COIN_PORTFOLIO: 'ADD_COIN_PORTFOLIO',
   ADD_COINS_PORTFOLIO: 'ADD_COINS_PORTFOLIO',
   UPDATE_COIN_PORTFOLIO: 'UPDATE_COIN_PORTFOLIO',
-  REMOVE_COIN_PORTFOLIO: 'REMOVE_COIN_PORTFOLIO'
+  REMOVE_COIN_PORTFOLIO: 'REMOVE_COIN_PORTFOLIO',
+  ADD_COIN_WATCHLIST: 'ADD_COIN_WATCHLIST',
+  REMOVE_COIN_WATCHLIST: 'REMOVE_COIN_WATCHLIST',
 };
-
-interface IActions {
-  GET_ALL_ASSETS: string;
-  SET_ALL_ASSETS: string;
-  GET_MARKET_PRICES: string;
-  SET_MARKET_PRICES: string;
-  ADD_COIN_PORTFOLIO: string;
-  ADD_COINS_PORTFOLIO: string;
-  UPDATE_COIN_PORTFOLIO: string;
-  REMOVE_COIN_PORTFOLIO: string;
-}
-
-interface IAllAssets {
-  type: IActions['GET_ALL_ASSETS'];
-  assets?: IAsset[];
-  loading: boolean;
-}
-
-interface IGetAllAssets {
-  type: IActions['GET_ALL_ASSETS'];
-  loading: boolean;
-}
-
-interface ISetAllAssets {
-  type: IActions['SET_ALL_ASSETS'];
-  assets: IAsset[];
-  loading: boolean;
-}
 
 // ACTION CREATORS
 const actionGetAllAssets = () => ({
@@ -85,22 +61,21 @@ const actionAddCoinsPortfolio = (coins: IAsset[]) => ({
 //   coin
 // });
 
-const fetchAll = (array: any[]) => Promise.all(array);
-
-interface IAllAssetsDispatch {
-  dispatch: (arg: IAllAssets) => (IAllAssets)
-}
+const actionAddCoinWatchlist = (coin: IAsset) => ({
+  type: Actions.ADD_COIN_WATCHLIST,
+  coin
+});
 
 // ACTIONS
 // Fetch assets from Nomics API V1.
-export const fetchAllAssets = () => (dispatch: (arg: IAllAssets) => (IAllAssets)) => {
+export const fetchAllAssets = () => (dispatch: DispatchAllAssets) => {
   dispatch(actionGetAllAssets());
   return fetchAll([getPrices(), getAvailableSupply()]).then((responses) =>
     dispatch(actionSetAllAssets(formatAssets(responses))));
 }
 
 // Fetch USD, USDC & USDT markets to filter out Exchange List.
-export const fetchMarketPrices = (asset: string) => (dispatch: any) => {
+export const fetchMarketPrices = (asset: string) => (dispatch: DispatchMarketPrices) => {
   dispatch(actionGetMarketPrices);
   return getMarkets().then((res) => {
     if (res && res.marketUSD && res.marketUSDC && res.marketUSDT) {
@@ -114,15 +89,19 @@ export const fetchMarketPrices = (asset: string) => (dispatch: any) => {
 }
 
 // Fetch the coins form localStorage.
-export const addCoinsPortfolio = (coins: IAsset[]) => (dispatch: any) => getPrices().then((res) => {
-  if (res) {
-    const portfolioAssets = formatCoinsForPortfolio(coins, res.data);
-    dispatch(actionAddCoinsPortfolio(portfolioAssets));
-  }
-});
+export const addCoinsPortfolio = (coins: IAsset[]) => (dispatch: DispatchAddCoins) => {
+  console.log('addCoinsPortfolio', coins);
+  return getPrices().then((res) => {
+    if (res) {
+      const portfolioAssets = formatCoinsForPortfolio(coins, res.data);
+      dispatch(actionAddCoinsPortfolio(portfolioAssets));
+    }
+  });
+}
+  
 
 // Add a coin to your portfolio.
-export const addCoinPortfolio = (coin: IAsset) => (dispatch: any) => {
+export const addCoinPortfolio = (coin: IAsset) => (dispatch: DispatchAddCoin) => {
   dispatch(actionAddCoinPortfolio(coin));
 };
 

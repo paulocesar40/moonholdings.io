@@ -114,6 +114,7 @@ class Search extends React.Component<IProps, IState> {
 
       this.props.addCoinPortfolio(Object.assign({
         currency,
+        exchange,
         name,
         marketCap,
         position,

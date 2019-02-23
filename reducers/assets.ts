@@ -3,11 +3,12 @@ import { IinitialAssetsState as IInitState, IAsset, IMarketAsset } from '../shar
 import { calculatePercentage } from '../services/coinFactory'
 import { arrayToObject } from '../shared/utils'
 
-const defaultState: IInitState = {
+export const defaultAssetsState: IInitState = {
   assets: [],
   portfolio: [],
+  watchlist: [],
   exchanges: [],
-  loading: false,
+  loading: true,
   fetchingMarkets: false
 };
 
@@ -20,64 +21,40 @@ interface IAction {
   fetchingMarkets: boolean;
 }
 
-export const AssetsReducer = (state = defaultState, action: IAction): IInitState => {
+export const AssetsReducer = (state = defaultAssetsState, action: IAction): IInitState => {
   switch (action.type) {
     case Actions.GET_ALL_ASSETS: {
       const { loading } = action;
-      console.log('Actions.GET_ALL_ASSETS', action);
-      return {
-        ...state,
-        loading
-      };
+      return { ...state, loading };
     }
 
     case Actions.SET_ALL_ASSETS: {
       const { assets, loading } = action;
-      return {
-        ...state,
-        assets,
-        loading
-      };
+      return { ...state, assets, loading };
     }
 
     case Actions.GET_MARKET_PRICES: {
       const { fetchingMarkets } = action;
-      return {
-        ...state,
-        fetchingMarkets
-      };
+      return { ...state, fetchingMarkets };
     }
 
     case Actions.SET_MARKET_PRICES: {
       const { exchanges, fetchingMarkets } = action;
-      return {
-        ...state,
-        exchanges,
-        fetchingMarkets
-      };
+      return { ...state, exchanges, fetchingMarkets };
     }
 
-    // Adds coins from localStorage
     case Actions.ADD_COINS_PORTFOLIO:
       const { assets } = action;
-
-      return {
-        ...state,
-        portfolio: assets
-      };
+      return { ...state, portfolio: assets };
 
     case Actions.ADD_COIN_PORTFOLIO:
       const { coin } = action;
       const { portfolio } = state;
       const newPortfolio = calculatePercentage(portfolio, coin);
       const moonPortfolio = arrayToObject(newPortfolio);
-      console.log('moonPortfolio', moonPortfolio);
       localStorage.setItem('moon_portfolio', JSON.stringify(moonPortfolio));
 
-      return {
-        ...state,
-        portfolio: newPortfolio
-      };
+      return { ...state, portfolio: newPortfolio };
 
     // case Actions.REMOVE_COIN_PORTFOLIO:
     //   const filteredPortfolio = state.portfolio.filter(c => c !== action.coin);

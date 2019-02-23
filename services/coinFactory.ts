@@ -10,6 +10,9 @@ const textMatch = (part: string, str: string) => str.search(part) !== -1;
 const mergeByCurrency = (matchArray: any[], nextArray: any[]) =>
   matchArray.map(m => Object.assign({}, m, nextArray.find(n => n.currency === m.currency)));
 
+// Combines Promises and returns responses together.
+export const fetchAll = (array: any[]) => Promise.all(array);
+
 // Return coins that match text | search by currency symbol or name.
 export const findAsset = (txt: string, assets: any[]) => {
   const checkText = (k: string, a: any) => (textMatch(txt.toLowerCase(), a[k].toLowerCase()) ? a : null);

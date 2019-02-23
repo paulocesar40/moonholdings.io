@@ -8,6 +8,7 @@ export interface IAsset {
   price: number;
   position: number;
   value: number;
+  inWatchlist?: boolean;
 }
 
 export interface IMarketAsset {
@@ -21,6 +22,7 @@ export interface IMarketAsset {
 export interface IinitialAssetsState {
   assets: IAsset[];
   portfolio: IAsset[];
+  watchlist: IAsset[];
   exchanges: IMarketAsset[];
   loading: boolean;
   fetchingMarkets: boolean;

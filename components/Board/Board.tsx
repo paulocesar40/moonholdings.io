@@ -4,7 +4,7 @@ import { bind } from 'decko'
 
 import {
   Welcome, Astronaut, NomicsLink, PlusButton, Portfolio,
-  SquareEditWrapper, Search, Overlay
+  SquareEditWrapper, Search, BlockLoader, Overlay
 }  from '../../components'
 import { IinitialState, IMarketAsset, IAsset } from '../../shared/types'
 import { coinModel } from '../../shared/models'
@@ -51,6 +51,7 @@ class Board extends React.Component<IProps, IState> {
       const storedPortfolio = JSON.parse(localStorage.getItem('moon_portfolio') || '{}');
 
       if (storedPortfolio) {
+        console.log('storedPortfolio', storedPortfolio);
         const reconstructedPortfolio = Object.values(storedPortfolio);
         this.props.addCoinsPortfolio(reconstructedPortfolio);
       }
@@ -61,23 +62,27 @@ class Board extends React.Component<IProps, IState> {
     const { assets, portfolio, loading, overlay, exchanges, fetchingMarkets } = this.props;
     const { coin, edit, search } = this.state;
     const hasPortfolio = portfolio.length > 0;
-    console.log('loading', loading);
-    console.log('portfolio', portfolio);
 
     return (
       <div>
-        { edit && <SquareEditWrapper coin={coin} toggle={this.toggleSquareEdit}/> }
+        { edit &&
+          <SquareEditWrapper
+            coin={coin}
+            portfolio={portfolio}
+            toggle={this.toggleSquareEdit}
+          /> }
         { search &&
           <Search
             assets={assets}
             exchanges={exchanges}
             cancel={this.handleOverlayClick}
             fetching={fetchingMarkets}
-          />}
+          /> }
         { overlay && <Overlay handleClick={this.handleOverlayClick} /> }
         <StyledBoard>
-          { !hasPortfolio && <Welcome /> }
-          { hasPortfolio && <Portfolio coins={portfolio} edit={this.toggleSquareEdit} /> }
+          { loading ? <BlockLoader /> : !hasPortfolio ? <Welcome />
+            : <Portfolio coins={portfolio} edit={this.toggleSquareEdit} />
+          }
           <PlusButton toggleSearch={this.handleOnSearch} />
           <NomicsLink />
           <Astronaut showLogo={hasPortfolio} />

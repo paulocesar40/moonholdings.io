@@ -3,7 +3,7 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 import thunkMiddleware from 'redux-thunk'
 
 import { IinitialState } from './shared/types'
-import { AssetsReducer } from './reducers/assets'
+import { AssetsReducer, defaultAssetsState } from './reducers/assets'
 import { BoardReducer } from './reducers/board'
 
 const rootReducer = combineReducers({
@@ -12,7 +12,7 @@ const rootReducer = combineReducers({
 });
 
 export const defaultInitialState: IinitialState = {
-  AssetsReducer: { assets: [], loading: false, portfolio: [] },
+  AssetsReducer: defaultAssetsState,
   BoardReducer: { overlay: false },
 }
 
