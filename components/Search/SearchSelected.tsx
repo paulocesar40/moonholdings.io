@@ -11,7 +11,7 @@ interface IProps {
 export const SearchSelected = (props: IProps) => {
   return (
     <SearchSelectAsset>
-      <h2>No USD, USDC or USDT based exchanges found, using aggregate exchange data.</h2>
+      <h2>No USD, USDC or USDT paired based exchanges found, using aggregate exchange data.</h2>
       <SquareContainer>
         <Square coin={props.selected} index={0} inSearch={true} edit={function(){}} />
       </SquareContainer>

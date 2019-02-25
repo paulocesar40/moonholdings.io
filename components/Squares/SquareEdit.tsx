@@ -42,6 +42,7 @@ class SquareEdit extends React.Component<IProps, IState> {
   componentWillMount() {
     const { coin, portfolio } = this.props;
     const { balance: stateBalance } = this.state;
+
     const inPortfolio = portfolio && portfolio.filter(c => c.currency === coin.currency);
     const portCoin = inPortfolio[0] ? inPortfolio[0] : coin;
     const balance = portCoin.position ? portCoin.position : stateBalance;
@@ -56,6 +57,7 @@ class SquareEdit extends React.Component<IProps, IState> {
   render() {
     const { coin, balance, value, inPortfolio } = this.state;
     const { currency, exchange, percentage, position, price } = coin;
+
     const SaveButton = () => <button onClick={this.handleSave} disabled={balance <= 0}>Save</button>;
     const RemoveButton = () => <button onClick={this.handleRemove}>Remove</button>;
     const CancelButton = () => <button onClick={() => this.props.toggle(false)}>Cancel</button>;

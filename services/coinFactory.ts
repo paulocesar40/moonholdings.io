@@ -121,8 +121,11 @@ export const formatAssets = (responses: IResponseConfig[]) => {
 
 export const combineExchangeData = (asset: string, { marketUSD, marketUSDC, marketUSDT }: IGetMarketsRes) => {
   const combined = marketUSD.concat(marketUSDC).concat(marketUSDT);
-  return combined.filter((marketAsset: IMarketAsset) => marketAsset.base === asset);
-}
+  if (asset !== 'USDT')  {
+    return combined.filter((marketAsset: IMarketAsset) => marketAsset.base === asset);
+  }
+  return [];
+ }
 
 export const getExchangePrice = (exchange: string, exchanges: IMarketAsset[]) => {
   const assetExchange = exchanges.filter(({ exchange }) => exchange === exchange.toLowerCase())[0];

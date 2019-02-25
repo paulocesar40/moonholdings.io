@@ -28,9 +28,9 @@ export const EnterPosition = (props: IPropsPosition) => {
   const { asset, enterPosition } = props;
   return (
     <EnterPositionStyle>
-      <h2>Enter your <span>{asset.currency}</span> position<sup>*</sup> in order to add asset to your Portfolio. Or you can add the asset to your Watchlist.</h2>
+      <h2>Enter your <span>{asset.currency}</span> position in order to add asset to your Portfolio. Or add the asset to your Watchlist.</h2>
       <input type="number" placeholder="Enter Position" onChange={enterPosition} />
-      <h2>(*) Position is how much of the Asset you own.</h2>
+      <h2>Position is how much of the Asset you own.</h2>
     </EnterPositionStyle>
   )
 }
