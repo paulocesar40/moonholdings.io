@@ -8,7 +8,7 @@ import { SearchContainerDiv, SearchSection, SearchButtons, FunctionButton, Commo
   from '../../styles'
 import { setSearchBtnDisabled } from '../../shared/utils'
 import { findAsset, getExchangePrice } from '../../services/coinFactory';
-import { addCoinPortfolio, fetchMarketPrices } from '../../actions/assets'
+import { addCoinPortfolio, addCoinWatchlist, fetchMarketPrices } from '../../actions/assets'
 
 interface IProps {
   assets: IAsset[];
@@ -16,6 +16,7 @@ interface IProps {
   fetching: boolean;
   cancel(): void;
   addCoinPortfolio(coin: IAsset): void;
+  addCoinWatchlist(coin: IAsset): void;
   fetchMarketPrices(asset: string): void;
 }
 
@@ -89,7 +90,12 @@ class Search extends React.Component<IProps, IState> {
           >
             Add to Portfolio
           </FunctionButton>
-          <FunctionButton disabled={disabledWatchlist}>Add to Watchlist</FunctionButton>
+          <FunctionButton
+            disabled={disabledWatchlist}
+            onClick={this.handleAddWatchlist}
+          >
+            Add to Watchlist
+          </FunctionButton>
           <CommonButton onClick={cancel}>Cancel Search</CommonButton>
         </SearchButtons>
       </SearchContainerDiv>
@@ -123,6 +129,14 @@ class Search extends React.Component<IProps, IState> {
       }, selected));
 
       closeSearchModal();
+    }
+  }
+
+  @bind
+  handleAddWatchlist() {
+    const { selected } = this.state;
+    if (selected) {
+      this.props.addCoinWatchlist(selected);
     }
   }
 
@@ -171,6 +185,7 @@ class Search extends React.Component<IProps, IState> {
 const mapDispatchToProps = (dispatch: any) => ({
   fetchMarketPrices: (asset: string) => dispatch(fetchMarketPrices(asset)),
   addCoinPortfolio: (coin: IAsset) => dispatch(addCoinPortfolio(coin)),
+  addCoinWatchlist: (coin: IAsset) => dispatch(addCoinWatchlist(coin))
 });
 
 export const SearchJest = Search;

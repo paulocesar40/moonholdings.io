@@ -1,7 +1,7 @@
 import { getPrices, getAvailableSupply, getMarkets } from '../services/api'
 import { fetchAll, combineExchangeData, formatAssets, formatCoinsForPortfolio }
   from '../services/coinFactory'
-import { IAsset, DispatchAllAssets, DispatchMarketPrices, DispatchAddCoin, DispatchAddCoins }
+import { IAsset, DispatchAllAssets, DispatchMarketPrices, DispatchAddCoin, DispatchAddCoins, DispatchAddCoinWatch }
   from '../shared/types'
 
 // ACTION TYPES
@@ -98,11 +98,14 @@ export const addCoinsPortfolio = (coins: IAsset[]) => (dispatch: DispatchAddCoin
     }
   });
 }
-  
 
 // Add a coin to your portfolio.
 export const addCoinPortfolio = (coin: IAsset) => (dispatch: DispatchAddCoin) => {
   dispatch(actionAddCoinPortfolio(coin));
+};
+
+export const addCoinWatchlist = (coin: IAsset) => (dispatch: DispatchAddCoinWatch) => {
+  dispatch(actionAddCoinWatchlist(coin));
 };
 
 // Remove coin from your portfolio.

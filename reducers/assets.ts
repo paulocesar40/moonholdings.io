@@ -1,6 +1,6 @@
 import { Actions } from '../actions/assets'
 import { IinitialAssetsState as IInitState, IAsset, IMarketAsset } from '../shared/types'
-import { calculatePercentage } from '../services/coinFactory'
+import { calculatePercentage, updateWatchlist } from '../services/coinFactory'
 import { arrayToObject } from '../shared/utils'
 
 export const defaultAssetsState: IInitState = {
@@ -53,8 +53,14 @@ export const AssetsReducer = (state = defaultAssetsState, action: IAction): IIni
       const newPortfolio = calculatePercentage(portfolio, coin);
       const moonPortfolio = arrayToObject(newPortfolio);
       localStorage.setItem('moon_portfolio', JSON.stringify(moonPortfolio));
-
       return { ...state, portfolio: newPortfolio };
+
+    case Actions.ADD_COIN_WATCHLIST:
+      const { watchlist } = state;
+      const updatedWatchlist = updateWatchlist(action.coin, watchlist);
+      const moonWatchlist = arrayToObject(updatedWatchlist);
+      localStorage.setItem('moon_watchlist', JSON.stringify(moonWatchlist));
+      return { ...state, watchlist: updatedWatchlist };
 
     // case Actions.REMOVE_COIN_PORTFOLIO:
     //   const filteredPortfolio = state.portfolio.filter(c => c !== action.coin);

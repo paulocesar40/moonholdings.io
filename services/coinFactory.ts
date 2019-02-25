@@ -121,16 +121,13 @@ export const formatAssets = (responses: IResponseConfig[]) => {
 
 export const combineExchangeData = (asset: string, { marketUSD, marketUSDC, marketUSDT }: IGetMarketsRes) => {
   const combined = marketUSD.concat(marketUSDC).concat(marketUSDT);
-  if (asset !== 'USDT')  {
-    return combined.filter((marketAsset: IMarketAsset) => marketAsset.base === asset);
-  }
-  return [];
- }
+  return asset !== 'USDT' ? combined.filter((marketAsset: IMarketAsset) => marketAsset.base === asset) : [];
+};
 
 export const getExchangePrice = (exchange: string, exchanges: IMarketAsset[]) => {
   const assetExchange = exchanges.filter(({ exchange }) => exchange === exchange.toLowerCase())[0];
   return Number(assetExchange.price_quote);
-}
+};
 
 // Add coin's percentage of portfolio
 export const calculatePercentage = (portfolio: IAsset[], coin: IAsset) => {
@@ -146,6 +143,11 @@ export const calculatePercentage = (portfolio: IAsset[], coin: IAsset) => {
   });
 
   return updatedPortfolio;
+};
+
+export const updateWatchlist = (coin: IAsset, watchlist: IAsset[]) => {
+  watchlist.push(coin);
+  return watchlist.map((c) => c);
 };
 
 export const formatCoinsForPortfolio = (coins: IAsset[], data: IAsset[]) => {
